@@ -1,0 +1,104 @@
+/* eslint-disable @next/next/no-img-element */
+import { SOURCE_LABELS, readingTime, type Article } from '../lib/article';
+import { PrintButton } from './print-button';
+
+export function ArticleView({ article }: { article: Article }) {
+	return (
+		<article>
+			{/* Invisible on screen; in print the thead/tfoot repeat on every
+          page, giving each page top and bottom padding — @page margins
+          are ignored by WebKit and "Margins: None" dialogs. */}
+			<table className='print-sheet' role='presentation'>
+				<thead>
+					<tr>
+						<td className='print-spacer' />
+					</tr>
+				</thead>
+				<tfoot>
+					<tr>
+						<td className='print-spacer' />
+					</tr>
+				</tfoot>
+				<tbody>
+					<tr>
+						<td>
+							<header className='article-header'>
+								<div className='pub-line'>
+									{article.publicationLogo && (
+										<img
+											src={article.publicationLogo}
+											alt=''
+											className='pub-logo'
+											width={20}
+											height={20}
+											referrerPolicy='no-referrer'
+										/>
+									)}
+									<span className='pub-name'>{article.publication}</span>
+									{article.published && (
+										<>
+											<span className='pub-sep'>·</span>
+											<span>{article.published}</span>
+										</>
+									)}
+									<span className='pub-sep'>·</span>
+									<span>{readingTime(article.wordCount)}</span>
+									<PrintButton />
+								</div>
+
+								<h1 className='article-title'>{article.title}</h1>
+								{article.subtitle && <p className='article-subtitle'>{article.subtitle}</p>}
+
+								{article.author && (
+									<div className='byline'>
+										{article.authorImage && (
+											<img
+												src={article.authorImage}
+												alt=''
+												className='byline-photo'
+												width={26}
+												height={26}
+												referrerPolicy='no-referrer'
+											/>
+										)}
+										<span>
+											by <span className='byline-name'>{article.author}</span>
+										</span>
+									</div>
+								)}
+
+								<div className='fleuron' aria-hidden='true'>
+									❦
+								</div>
+							</header>
+
+							{article.heroImage && (
+								<figure className='hero'>
+									<img src={article.heroImage} alt='' referrerPolicy='no-referrer' />
+								</figure>
+							)}
+
+							<div
+								className='article-body'
+								// Sanitized server-side with an explicit allowlist in lib/extract.ts.
+								dangerouslySetInnerHTML={{ __html: article.bodyHtml }}
+							/>
+
+							<footer className='colophon'>
+								<p>
+									<a href={article.canonicalUrl} target='_blank' rel='noopener noreferrer'>
+										{article.canonicalUrl}
+									</a>
+								</p>
+								<p>
+									{SOURCE_LABELS[article.source]} · {article.wordCount.toLocaleString('en-US')}{' '}
+									words · set by adinkra
+								</p>
+							</footer>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</article>
+	);
+}

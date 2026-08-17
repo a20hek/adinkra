@@ -1,0 +1,608 @@
+@import 'tailwindcss';
+
+:root {
+	--paper: #f6f1e7;
+	--paper-deep: #efe8d9;
+	--ink: #211b12;
+	--ink-body: #45413b;
+	--ink-soft: #4c4335;
+	--muted: #7d7159;
+	--rule: #d8cdb6;
+	--accent: #9c3a1c;
+	--selection: #e7d9be;
+}
+
+::selection {
+	background: var(--selection);
+}
+
+html {
+	background: var(--paper);
+	color-scheme: light;
+}
+
+body {
+	background: var(--paper);
+	color: var(--ink);
+	font-family: var(--font-serif), Georgia, serif;
+	font-optical-sizing: auto;
+	text-rendering: optimizeLegibility;
+}
+
+.page {
+	max-width: 48rem;
+	margin-inline: auto;
+	padding: 2rem 1.25rem 5rem;
+}
+
+.masthead {
+	text-align: center;
+	margin-bottom: 3rem;
+}
+
+.masthead-title {
+	font-family: var(--font-title), Georgia, serif;
+	font-size: 2.375rem;
+	line-height: 1;
+	font-weight: 400;
+	letter-spacing: 0.01em;
+}
+
+.url-form {
+	margin-bottom: 3rem;
+}
+
+.url-label {
+	display: block;
+	font-family: var(--font-mono), monospace;
+	font-size: 0.6875rem;
+	letter-spacing: 0.18em;
+	text-transform: uppercase;
+	color: var(--muted);
+	margin-bottom: 0.5rem;
+}
+
+.url-row {
+	display: flex;
+	gap: 0.75rem;
+	align-items: stretch;
+}
+
+.url-input {
+	flex: 1;
+	min-width: 0;
+	font-family: var(--font-mono), monospace;
+	font-size: 0.8125rem;
+	color: var(--ink);
+	background: transparent;
+	border: none;
+	border-bottom: 1px solid var(--rule);
+	padding: 0.5rem 0.125rem;
+	outline: none;
+	transition: border-color 150ms ease;
+}
+
+.url-input::placeholder {
+	color: var(--muted);
+	opacity: 0.7;
+}
+
+.url-input:focus {
+	border-bottom-color: var(--accent);
+}
+
+.url-submit {
+	font-family: var(--font-mono), monospace;
+	font-size: 0.6875rem;
+	letter-spacing: 0.18em;
+	text-transform: uppercase;
+	color: var(--paper);
+	background: var(--ink);
+	border: 1px solid var(--ink);
+	padding: 0.5rem 1.25rem;
+	cursor: pointer;
+	white-space: nowrap;
+	transition:
+		background 150ms ease,
+		color 150ms ease;
+}
+
+.url-submit:hover:not(:disabled) {
+	background: var(--accent);
+	border-color: var(--accent);
+}
+
+.url-submit:disabled {
+	opacity: 0.6;
+	cursor: default;
+}
+
+.empty {
+	font-size: 1.0625rem;
+	line-height: 1.65;
+	color: var(--ink-soft);
+	font-style: italic;
+}
+
+.empty p + p {
+	margin-top: 1rem;
+}
+
+.empty a {
+	color: var(--accent);
+	text-decoration: underline;
+	text-underline-offset: 3px;
+}
+
+.notice {
+	border: 1px solid var(--rule);
+	padding: 1.25rem 1.5rem;
+	font-size: 0.9375rem;
+	line-height: 1.6;
+	color: var(--ink-soft);
+}
+
+.notice-title {
+	font-family: var(--font-mono), monospace;
+	font-size: 0.6875rem;
+	letter-spacing: 0.18em;
+	text-transform: uppercase;
+	color: var(--muted);
+	margin-bottom: 0.375rem;
+}
+
+.notice-error {
+	border-color: var(--accent);
+}
+
+.notice-error .notice-title {
+	color: var(--accent);
+}
+
+.pub-line {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.5rem;
+	flex-wrap: wrap;
+	font-family: var(--font-mono), monospace;
+	font-size: 0.6875rem;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	color: var(--muted);
+}
+
+.pub-logo {
+	width: 1.25rem;
+	height: 1.25rem;
+	object-fit: cover;
+	border-radius: 2px;
+	border: 1px solid var(--rule);
+}
+
+.pub-name {
+	color: var(--accent);
+	font-weight: 600;
+}
+
+.pub-sep {
+	color: var(--rule);
+}
+
+.print-button {
+	font-family: var(--font-mono), monospace;
+	font-size: 0.6875rem;
+	letter-spacing: 0.18em;
+	text-transform: uppercase;
+	color: var(--accent);
+	background: none;
+	border: 1px solid currentColor;
+	padding: 0.2rem 0.625rem;
+	cursor: pointer;
+	transition:
+		background 150ms ease,
+		color 150ms ease;
+}
+
+.print-button:hover {
+	background: var(--accent);
+	border-color: var(--accent);
+	color: var(--paper);
+}
+
+.article-title {
+	font-family: var(--font-title), Georgia, serif;
+	font-size: clamp(2rem, 6vw, 2.875rem);
+	line-height: 1.12;
+	font-weight: 400;
+	letter-spacing: -0.015em;
+	margin-top: 1.25rem;
+	text-align: center;
+	text-wrap: balance;
+}
+
+.article-subtitle {
+	font-size: 1.3125rem;
+	line-height: 1.4;
+	font-style: italic;
+	color: var(--ink-soft);
+	margin-top: 0.75rem;
+	text-align: center;
+	text-wrap: pretty;
+}
+
+.byline {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.625rem;
+	margin-top: 1.25rem;
+	font-family: var(--font-mono), monospace;
+	font-size: 0.75rem;
+	color: var(--muted);
+}
+
+.byline-photo {
+	width: 1.625rem;
+	height: 1.625rem;
+	border-radius: 9999px;
+	object-fit: cover;
+	border: 1px solid var(--rule);
+}
+
+.byline-name {
+	color: var(--ink);
+}
+
+.fleuron {
+	text-align: center;
+	color: var(--accent);
+	font-size: 1.25rem;
+	margin: 2rem 0;
+}
+
+.hero {
+	margin: 0 0 2.25rem;
+}
+
+.hero img {
+	width: 100%;
+	height: auto;
+	border: 1px solid var(--rule);
+}
+
+.article-body {
+	font-family: var(--font-body), Georgia, serif;
+	font-size: 1.25rem;
+	line-height: 1.75;
+	font-weight: 400;
+	color: var(--ink-body);
+	overflow-wrap: break-word;
+}
+
+.article-body p {
+	margin: 0 0 1.15em;
+	text-wrap: pretty;
+}
+
+.article-body > p:first-child::first-letter {
+	float: left;
+	font-size: 3.4em;
+	line-height: 0.82;
+	font-weight: 500;
+	padding: 0.06em 0.08em 0 0;
+	color: var(--accent);
+}
+
+.article-body h1,
+.article-body h2,
+.article-body h3,
+.article-body h4,
+.article-body h5,
+.article-body h6 {
+	font-weight: 700;
+	line-height: 1.2;
+	letter-spacing: -0.01em;
+	margin: 2em 0 0.75em;
+	text-wrap: balance;
+}
+
+.article-body h1 {
+	font-size: 1.75rem;
+}
+.article-body h2 {
+	font-size: 1.5625rem;
+}
+.article-body h3 {
+	font-size: 1.375rem;
+}
+.article-body h4,
+.article-body h5,
+.article-body h6 {
+	font-size: 1.125rem;
+}
+
+.article-body a {
+	color: inherit;
+	text-decoration: underline;
+	text-decoration-color: var(--accent);
+	text-decoration-thickness: 1px;
+	text-underline-offset: 3px;
+}
+
+.article-body a:hover {
+	color: var(--accent);
+}
+
+.article-body em,
+.article-body i {
+	font-style: italic;
+}
+
+.article-body blockquote {
+	margin: 1.5em 0;
+	padding-left: 1.25em;
+	border-left: 3px solid var(--accent);
+	font-style: italic;
+	color: var(--ink-soft);
+}
+
+.article-body ul,
+.article-body ol {
+	margin: 1.25em 0 1.25em 1.5em;
+}
+
+.article-body ul {
+	list-style: disc;
+}
+.article-body ol {
+	list-style: decimal;
+}
+
+.article-body li {
+	margin: 0.375em 0;
+	padding-left: 0.25em;
+}
+
+.article-body li::marker {
+	color: var(--accent);
+}
+
+.article-body hr {
+	border: none;
+	margin: 2.25em 0;
+	text-align: center;
+}
+
+.article-body hr::before {
+	content: '❧';
+	color: var(--accent);
+	font-size: 1.125rem;
+	letter-spacing: 0.75em;
+}
+
+.article-body img {
+	max-width: 100%;
+	height: auto;
+	margin-inline: auto;
+	border: 1px solid var(--rule);
+}
+
+.article-body figure {
+	margin: 2.25em 0;
+}
+
+.article-body figcaption,
+.article-body .image-caption {
+	font-family: var(--font-mono), monospace;
+	font-style: normal;
+	font-size: 0.75rem;
+	line-height: 1.5;
+	color: var(--muted);
+	text-align: center;
+	margin-top: 0.625rem;
+}
+
+.article-body pre {
+	font-family: var(--font-mono), monospace;
+	font-size: 0.8125rem;
+	line-height: 1.6;
+	background: var(--paper-deep);
+	border: 1px solid var(--rule);
+	padding: 1rem 1.25rem;
+	overflow-x: auto;
+	margin: 1.5em 0;
+}
+
+.article-body code {
+	font-family: var(--font-mono), monospace;
+	font-size: 0.85em;
+}
+
+.article-body p code,
+.article-body li code {
+	background: var(--paper-deep);
+	border: 1px solid var(--rule);
+	padding: 0.1em 0.35em;
+}
+
+.article-body table {
+	font-family: var(--font-mono), monospace;
+	font-size: 0.8125rem;
+	border-collapse: collapse;
+	margin: 1.5em 0;
+	width: 100%;
+}
+
+.article-body th,
+.article-body td {
+	border: 1px solid var(--rule);
+	padding: 0.5em 0.75em;
+	text-align: left;
+}
+
+.article-body th {
+	font-weight: 600;
+	background: var(--paper-deep);
+}
+
+.article-body sup {
+	font-size: 0.7em;
+}
+
+.article-body .footnote-anchor,
+.article-body .footnote-number {
+	color: var(--accent);
+	text-decoration: none;
+	font-weight: 600;
+}
+
+.article-body .footnote {
+	font-size: 0.9375rem;
+	color: var(--ink-soft);
+	margin-top: 1em;
+}
+
+.article-body iframe,
+.article-body video {
+	width: 100%;
+	aspect-ratio: 16 / 9;
+	height: auto;
+	border: 1px solid var(--rule);
+	margin: 2.25em 0;
+}
+
+.colophon {
+	margin-top: 3.5rem;
+	border-top: 1px solid var(--ink);
+	padding-top: 0.625rem;
+	position: relative;
+	font-family: var(--font-mono), monospace;
+	font-size: 0.6875rem;
+	line-height: 1.7;
+	color: var(--muted);
+	overflow-wrap: anywhere;
+}
+
+.colophon::before {
+	content: '';
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 3px;
+	border-top: 1px solid var(--rule);
+}
+
+.colophon a {
+	color: var(--muted);
+	text-decoration: underline;
+	text-underline-offset: 2px;
+}
+
+.colophon a:hover {
+	color: var(--accent);
+}
+
+/* On screen the print-sheet table is dissolved entirely. */
+.print-sheet,
+.print-sheet > thead,
+.print-sheet > tbody,
+.print-sheet > tfoot,
+.print-sheet tr,
+.print-sheet td {
+	display: contents;
+}
+
+@page {
+	margin: 10mm;
+}
+
+@media print {
+	html,
+	body {
+		background: #fff;
+	}
+
+	/* Side margins live in the content — WebKit print preview and a
+     "Margins: None" dialog setting both ignore @page. */
+	.page {
+		max-width: none;
+		padding: 0 20mm;
+	}
+
+	.url-form,
+	.print-button,
+	.masthead,
+	.colophon {
+		display: none;
+	}
+
+	/* Repeating table header/footer give every printed page its top
+     and bottom padding, independent of @page support. */
+	.print-sheet {
+		display: table;
+		width: 100%;
+	}
+
+	.print-sheet > thead {
+		display: table-header-group;
+	}
+
+	.print-sheet > tfoot {
+		display: table-footer-group;
+	}
+
+	.print-sheet > tbody {
+		display: table-row-group;
+	}
+
+	.print-sheet tr {
+		display: table-row;
+	}
+
+	.print-sheet td {
+		display: table-cell;
+	}
+
+	.print-spacer {
+		height: 8mm;
+	}
+
+	.article-header {
+		padding-top: 25mm;
+	}
+
+	.article-body {
+		font-size: 11pt;
+		line-height: 1.55;
+	}
+
+	.article-title {
+		font-size: 22pt;
+	}
+
+	.article-subtitle {
+		font-size: 13pt;
+	}
+
+	.article-body pre,
+	.article-body p code,
+	.article-body li code,
+	.article-body th,
+	.article-body blockquote {
+		print-color-adjust: exact;
+		-webkit-print-color-adjust: exact;
+	}
+
+	.hero,
+	.article-body figure,
+	.article-body img {
+		break-inside: avoid;
+	}
+
+	.article-body h1,
+	.article-body h2,
+	.article-body h3 {
+		break-after: avoid;
+	}
+}
