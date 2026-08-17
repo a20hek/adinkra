@@ -232,6 +232,25 @@ function unwrapSingleDivs(html: string): string {
 	return body.innerHTML;
 }
 
+/**
+ * True when the first meaningful content in the body (in document order,
+ * before any text) is an image. Authors often upload the same artwork twice —
+ * inline at the top and again as the post cover — under different asset URLs,
+ * so URL comparison can't catch the duplicate; position is the only signal.
+ */
+function bodyLeadsWithImage(bodyHtml: string): boolean {
+	const { document, NodeFilter } = new JSDOM(`<body>${bodyHtml}</body>`).window;
+	const walker = document.createTreeWalker(
+		document.body,
+		NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_TEXT
+	);
+	for (let node = walker.nextNode(); node; node = walker.nextNode()) {
+		if (node.nodeName === 'IMG') return true;
+		if (node.nodeType === node.TEXT_NODE && node.textContent?.trim()) return false;
+	}
+	return false;
+}
+
 function bodyImageKeys(bodyHtml: string): Set<string> {
 	const dom = new JSDOM(`<body>${bodyHtml}</body>`);
 	const keys = new Set<string>();
@@ -272,7 +291,9 @@ function finishArticle(
 	partial: Omit<Article, 'wordCount' | 'heroImage'> & { heroImage?: string }
 ): Article {
 	const hero =
-		partial.heroImage && !bodyImageKeys(partial.bodyHtml).has(imageKey(partial.heroImage))
+		partial.heroImage &&
+		!bodyImageKeys(partial.bodyHtml).has(imageKey(partial.heroImage)) &&
+		!bodyLeadsWithImage(partial.bodyHtml)
 			? partial.heroImage
 			: undefined;
 
