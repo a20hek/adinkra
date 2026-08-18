@@ -10,6 +10,8 @@
 	--rule: #d8cdb6;
 	--accent: #9c3a1c;
 	--selection: #e7d9be;
+	--ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+	--ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
 }
 
 ::selection {
@@ -48,18 +50,18 @@ body {
 	letter-spacing: 0.01em;
 }
 
-.url-form {
-	margin-bottom: 3rem;
+.masthead-title a {
+	color: inherit;
+	text-decoration: none;
 }
 
-.url-label {
-	display: block;
-	font-family: var(--font-mono), monospace;
-	font-size: 0.6875rem;
-	letter-spacing: 0.18em;
-	text-transform: uppercase;
-	color: var(--muted);
-	margin-bottom: 0.5rem;
+.masthead-title a:focus-visible {
+	outline: 2px solid var(--accent);
+	outline-offset: 4px;
+}
+
+.url-form {
+	margin-bottom: 3rem;
 }
 
 .url-row {
@@ -79,7 +81,8 @@ body {
 	border-bottom: 1px solid var(--rule);
 	padding: 0.5rem 0.125rem;
 	outline: none;
-	transition: border-color 150ms ease;
+	caret-color: var(--accent);
+	transition: border-color 200ms ease;
 }
 
 .url-input::placeholder {
@@ -104,12 +107,19 @@ body {
 	white-space: nowrap;
 	transition:
 		background 150ms ease,
-		color 150ms ease;
+		border-color 150ms ease,
+		transform 160ms var(--ease-out);
 }
 
-.url-submit:hover:not(:disabled) {
-	background: var(--accent);
-	border-color: var(--accent);
+@media (hover: hover) and (pointer: fine) {
+	.url-submit:hover:not(:disabled) {
+		background: var(--accent);
+		border-color: var(--accent);
+	}
+}
+
+.url-submit:active:not(:disabled) {
+	transform: scale(0.97);
 }
 
 .url-submit:disabled {
