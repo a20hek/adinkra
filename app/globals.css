@@ -127,21 +127,139 @@ body {
 	cursor: default;
 }
 
-.empty {
+/* Home (no article loaded) centers the composition with padding rather
+   than flex so the class swap on navigation animates the form gliding
+   from center to top instead of jumping. */
+.page-home {
+	min-height: 100dvh;
+	padding-top: clamp(4rem, 30dvh, 20rem);
+	padding-bottom: 7rem;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+	.page {
+		transition: padding-top 500ms var(--ease-in-out);
+	}
+}
+
+.page-home .masthead {
+	margin-bottom: 2.75rem;
+}
+
+.page-home .url-form {
+	width: 100%;
+	max-width: 40rem;
+	margin-inline: auto;
+	margin-bottom: 0;
+}
+
+.try {
+	text-align: center;
 	font-size: 1.0625rem;
-	line-height: 1.65;
-	color: var(--ink-soft);
 	font-style: italic;
+	color: var(--ink-soft);
+	margin-top: 2.5rem;
 }
 
-.empty p + p {
-	margin-top: 1rem;
-}
-
-.empty a {
+.try a {
 	color: var(--accent);
 	text-decoration: underline;
 	text-underline-offset: 3px;
+	transition: color 150ms ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.try a:hover {
+		color: var(--ink);
+	}
+}
+
+@keyframes rise {
+	from {
+		opacity: 0;
+		transform: translateY(10px);
+	}
+	to {
+		opacity: 1;
+		transform: none;
+	}
+}
+
+@keyframes fade {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+.page-home .masthead,
+.page-home .url-form,
+.page-home .try {
+	animation: rise 500ms var(--ease-out) both;
+}
+
+.page-home .url-form {
+	animation-delay: 60ms;
+}
+
+.page-home .try {
+	animation-delay: 120ms;
+}
+
+.notice {
+	animation: rise 400ms var(--ease-out) both;
+}
+
+@keyframes pulse {
+	50% {
+		opacity: 0.45;
+	}
+}
+
+.setting {
+	text-align: center;
+	font-size: 1.0625rem;
+	font-style: italic;
+	color: var(--muted);
+	margin-top: 3.5rem;
+	animation:
+		rise 400ms var(--ease-out) both,
+		pulse 2s ease-in-out 600ms infinite;
+}
+
+/* The article settles in like a page being composed: header, then
+   hero, then body. Stagger is decorative — nothing blocks. */
+.article-header {
+	animation: rise 500ms var(--ease-out) both;
+}
+
+.hero {
+	animation: rise 500ms var(--ease-out) 70ms both;
+}
+
+.article-body {
+	animation: rise 500ms var(--ease-out) 140ms both;
+}
+
+.colophon {
+	animation: fade 500ms ease 250ms both;
+}
+
+/* Reduced motion keeps the comprehension fades, drops the movement. */
+@media (prefers-reduced-motion: reduce) {
+	.page-home .masthead,
+	.page-home .url-form,
+	.page-home .try,
+	.notice,
+	.setting,
+	.article-header,
+	.hero,
+	.article-body,
+	.colophon {
+		animation: fade 200ms ease both;
+	}
 }
 
 .notice {
@@ -542,6 +660,13 @@ body {
 	html,
 	body {
 		background: #fff;
+	}
+
+	.article-header,
+	.hero,
+	.article-body,
+	.colophon {
+		animation: none;
 	}
 
 	/* Side margins live in the content — WebKit print preview and a

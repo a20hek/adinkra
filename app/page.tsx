@@ -11,7 +11,7 @@ const getArticle = cache(extractArticle);
 
 const EXAMPLES = [
   { label: "How to Do Great Work", url: "https://paulgraham.com/greatwork.html" },
-  { label: "an Astral Codex Ten post", url: "https://www.astralcodexten.com/p/your-book-review-the-escape-artist" },
+  { label: "1,000 True Fans", url: "https://kk.org/thetechnium/1000-true-fans/" },
 ];
 
 function firstParam(value: string | string[] | undefined): string {
@@ -54,9 +54,11 @@ export default async function Home({ searchParams }: PageProps<"/">) {
   const url = firstParam((await searchParams).url);
 
   return (
-    <main className="page">
+    <main className={url ? "page" : "page page-home"}>
       <header className="masthead">
-        <h1 className="masthead-title">adinkra</h1>
+        <h1 className="masthead-title">
+          <Link href="/">adinkra</Link>
+        </h1>
       </header>
 
       <UrlForm />
@@ -65,33 +67,24 @@ export default async function Home({ searchParams }: PageProps<"/">) {
         <Suspense
           key={url}
           fallback={
-            <div className="notice" aria-live="polite">
-              <p className="notice-title">Setting type&hellip;</p>
-              <p>Fetching the article and laying it out in house style.</p>
-            </div>
+            <p className="setting" role="status">
+              Setting type&hellip;
+            </p>
           }
         >
           <LoadedArticle url={url} />
         </Suspense>
       ) : (
-        <div className="empty">
-          <p>
-            Paste a link to a Substack post, a Paul Graham essay, or most any blog. adinkra
-            strips the feed furniture&mdash;comments, buttons, popups&mdash;and resets the piece
-            in one standard layout: the author, the publication, the words, the images. Nothing
-            else.
-          </p>
-          <p>
-            Try{" "}
-            {EXAMPLES.map((example, index) => (
-              <span key={example.url}>
-                {index > 0 && " or "}
-                <Link href={`/?url=${encodeURIComponent(example.url)}`}>{example.label}</Link>
-              </span>
-            ))}
-            .
-          </p>
-        </div>
+        <p className="try">
+          Try{" "}
+          {EXAMPLES.map((example, index) => (
+            <span key={example.url}>
+              {index > 0 && " or "}
+              <Link href={`/?url=${encodeURIComponent(example.url)}`}>{example.label}</Link>
+            </span>
+          ))}
+          .
+        </p>
       )}
     </main>
   );
