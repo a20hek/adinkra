@@ -27,6 +27,7 @@ export function UrlForm() {
 
 	function handleSubmit(event: FormEvent<HTMLFormElement>) {
 		event.preventDefault();
+		if (!value.trim() && !urlParam) return;
 		open(value);
 	}
 
@@ -41,7 +42,7 @@ export function UrlForm() {
 
 	return (
 		<form onSubmit={handleSubmit} className='url-form'>
-			<label htmlFor='article-url' className='url-label'>
+			<label htmlFor='article-url' className='sr-only'>
 				Article URL
 			</label>
 			<div className='url-row'>
@@ -52,20 +53,22 @@ export function UrlForm() {
 					autoComplete='off'
 					spellCheck={false}
 					className='url-input'
-					placeholder='https://something.substack.com/p/… or paulgraham.com/…'
+					placeholder='Paste a link'
 					value={value}
 					onChange={(event) => setValue(event.target.value)}
 					onPaste={handlePaste}
+					autoFocus={!urlParam}
 				/>
-				{/* Pasting (and Enter, via implicit submission) already sets the
-				    type, so the slot holds Print instead of a redundant Read. */}
+				{/* Once an article is set, pasting (and Enter, via implicit
+				    submission) already sets the type, so the slot holds Print
+				    instead of a redundant Read. */}
 				<button
-					type='button'
+					type={urlParam ? 'button' : 'submit'}
 					className='url-submit'
-					disabled={isPending || !urlParam}
-					onClick={() => window.print()}
+					disabled={isPending}
+					onClick={urlParam ? () => window.print() : undefined}
 				>
-					{isPending ? 'Setting type…' : 'Print'}
+					{isPending ? 'Setting type…' : urlParam ? 'Print' : 'Read'}
 				</button>
 			</div>
 		</form>
