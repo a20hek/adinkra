@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Newsreader, Lora, Libre_Baskerville, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { StaleTitleCleanup } from "./components/stale-title-cleanup";
 
 const newsreader = Newsreader({
   subsets: ["latin"],
@@ -41,7 +42,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       className={`${newsreader.variable} ${lora.variable} ${libreBaskerville.variable} ${geistMono.variable}`}
     >
-      <body className="antialiased">{children}</body>
+      <body className="antialiased">
+        <StaleTitleCleanup />
+        {children}
+      </body>
     </html>
   );
 }
