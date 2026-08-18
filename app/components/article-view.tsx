@@ -1,6 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
 import { SOURCE_LABELS, readingTime, type Article } from '../lib/article';
-import { PrintButton } from './print-button';
 
 export function ArticleView({ article }: { article: Article }) {
 	return (
@@ -43,7 +42,6 @@ export function ArticleView({ article }: { article: Article }) {
 									)}
 									<span className='pub-sep'>·</span>
 									<span>{readingTime(article.wordCount)}</span>
-									<PrintButton />
 								</div>
 
 								<h1 className='article-title'>{article.title}</h1>

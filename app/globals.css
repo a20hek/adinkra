@@ -189,27 +189,6 @@ body {
 	color: var(--rule);
 }
 
-.print-button {
-	font-family: var(--font-mono), monospace;
-	font-size: 0.6875rem;
-	letter-spacing: 0.18em;
-	text-transform: uppercase;
-	color: var(--accent);
-	background: none;
-	border: 1px solid currentColor;
-	padding: 0.2rem 0.625rem;
-	cursor: pointer;
-	transition:
-		background 150ms ease,
-		color 150ms ease;
-}
-
-.print-button:hover {
-	background: var(--accent);
-	border-color: var(--accent);
-	color: var(--paper);
-}
-
 .article-title {
 	font-family: var(--font-title), Georgia, serif;
 	font-size: clamp(2rem, 6vw, 2.875rem);
@@ -563,7 +542,6 @@ body {
 	}
 
 	.url-form,
-	.print-button,
 	.masthead,
 	.colophon {
 		display: none;

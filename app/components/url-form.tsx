@@ -57,8 +57,15 @@ export function UrlForm() {
 					onChange={(event) => setValue(event.target.value)}
 					onPaste={handlePaste}
 				/>
-				<button type='submit' className='url-submit' disabled={isPending}>
-					{isPending ? 'Setting type…' : 'Read'}
+				{/* Pasting (and Enter, via implicit submission) already sets the
+				    type, so the slot holds Print instead of a redundant Read. */}
+				<button
+					type='button'
+					className='url-submit'
+					disabled={isPending || !urlParam}
+					onClick={() => window.print()}
+				>
+					{isPending ? 'Setting type…' : 'Print'}
 				</button>
 			</div>
 		</form>
