@@ -448,6 +448,7 @@ body {
 
 .article-body sup {
 	font-size: 0.7em;
+	line-height: 0;
 }
 
 .article-body .footnote-anchor,
@@ -457,10 +458,41 @@ body {
 	font-weight: 600;
 }
 
+/* Substack emits in-text refs as a bare <a>, no <sup>. Superscript via
+   relative offset + zero line-height so the marker can't stretch its
+   line box (vertical-align: super would). */
+.article-body .footnote-anchor {
+	font-size: 0.7em;
+	line-height: 0;
+	position: relative;
+	top: -0.55em;
+	padding-left: 0.1em;
+}
+
+/* Some sources do wrap the ref in <sup>; don't shrink or raise twice. */
+.article-body sup .footnote-anchor {
+	font-size: 1em;
+	top: 0;
+}
+
 .article-body .footnote {
 	font-size: 0.9375rem;
 	color: var(--ink-soft);
 	margin-top: 1em;
+	display: flex;
+	gap: 0.65em;
+}
+
+.article-body .footnote-content > :first-child {
+	margin-top: 0;
+}
+
+.article-body .footnote-content > :last-child {
+	margin-bottom: 0;
+}
+
+.article-body :target {
+	scroll-margin-top: 2rem;
 }
 
 .article-body iframe,
