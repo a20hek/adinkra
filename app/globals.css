@@ -26,7 +26,7 @@ html {
 body {
 	background: var(--paper);
 	color: var(--ink);
-	font-family: var(--font-serif), Georgia, serif;
+	font-family: var(--font-title), Georgia, serif;
 	font-optical-sizing: auto;
 	text-rendering: optimizeLegibility;
 }
@@ -134,6 +134,19 @@ body {
 	min-height: 100dvh;
 	padding-top: clamp(4rem, 30dvh, 20rem);
 	padding-bottom: 7rem;
+}
+
+/* Article pages widen the shell so media can break out of the prose
+   measure; each block below settles at its own narrower width. */
+.page-article {
+	max-width: 64rem;
+}
+
+.page-article .url-form,
+.page-article .notice,
+.page-article .setting {
+	max-width: 45.5rem;
+	margin-inline: auto;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -313,8 +326,13 @@ body {
 	font-weight: 600;
 }
 
-.pub-sep {
+.meta-sep {
 	color: var(--rule);
+}
+
+.article-header {
+	max-width: 48rem;
+	margin-inline: auto;
 }
 
 .article-title {
@@ -369,7 +387,8 @@ body {
 }
 
 .hero {
-	margin: 0 0 2.25rem;
+	max-width: 58rem;
+	margin: 0 auto 2.25rem;
 }
 
 .hero img {
@@ -379,6 +398,8 @@ body {
 }
 
 .article-body {
+	max-width: 42rem;
+	margin-inline: auto;
 	font-family: var(--font-body), Georgia, serif;
 	font-size: 1.25rem;
 	line-height: 1.75;
@@ -611,8 +632,29 @@ body {
 	margin: 2.25em 0;
 }
 
+/* Media breaks out of the prose measure via negative margins rather
+   than a grid — grid would stop vertical margins collapsing between
+   prose blocks. Screen-only so print never inherits the overhang. */
+@media screen and (min-width: 64rem) {
+	.article-body > figure,
+	.article-body > pre,
+	.article-body > table,
+	.article-body > iframe,
+	.article-body > video {
+		margin-inline: -8rem;
+	}
+
+	.article-body > table,
+	.article-body > iframe,
+	.article-body > video {
+		width: calc(100% + 16rem);
+	}
+}
+
 .colophon {
-	margin-top: 3.5rem;
+	max-width: 42rem;
+	margin: 3.5rem auto 0;
+	text-align: center;
 	border-top: 1px solid var(--ink);
 	padding-top: 0.625rem;
 	position: relative;
@@ -674,6 +716,12 @@ body {
 	.page {
 		max-width: none;
 		padding: 0 20mm;
+	}
+
+	.article-header,
+	.hero,
+	.article-body {
+		max-width: none;
 	}
 
 	.url-form,

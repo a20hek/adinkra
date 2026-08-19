@@ -1,14 +1,7 @@
 import type { Metadata } from "next";
-import { Newsreader, Lora, Libre_Baskerville, Geist_Mono } from "next/font/google";
+import { Lora, Libre_Baskerville, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { StaleTitleCleanup } from "./components/stale-title-cleanup";
-
-const newsreader = Newsreader({
-  subsets: ["latin"],
-  style: ["normal", "italic"],
-  variable: "--font-serif",
-  display: "swap",
-});
 
 const lora = Lora({
   subsets: ["latin"],
@@ -19,7 +12,8 @@ const lora = Lora({
 
 const libreBaskerville = Libre_Baskerville({
   subsets: ["latin"],
-  weight: ["400", "700"],
+  weight: "variable",
+  style: ["normal", "italic"],
   variable: "--font-title",
   display: "swap",
 });
@@ -40,7 +34,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${newsreader.variable} ${lora.variable} ${libreBaskerville.variable} ${geistMono.variable}`}
+      className={`${lora.variable} ${libreBaskerville.variable} ${geistMono.variable}`}
     >
       <body className="antialiased">
         <StaleTitleCleanup />

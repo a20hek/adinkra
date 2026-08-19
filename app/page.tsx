@@ -54,7 +54,7 @@ export default async function Home({ searchParams }: PageProps<"/">) {
   const url = firstParam((await searchParams).url);
 
   return (
-    <main className={url ? "page" : "page page-home"}>
+    <main className={url ? "page page-article" : "page page-home"}>
       <header className="masthead">
         <h1 className="masthead-title">
           <Link href="/">adinkra</Link>

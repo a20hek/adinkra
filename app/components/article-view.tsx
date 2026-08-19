@@ -30,40 +30,44 @@ export function ArticleView({ article }: { article: Article }) {
 											className='pub-logo'
 											width={20}
 											height={20}
+											fetchPriority='high'
 											referrerPolicy='no-referrer'
 										/>
 									)}
 									<span className='pub-name'>{article.publication}</span>
-									{article.published && (
-										<>
-											<span className='pub-sep'>·</span>
-											<span>{article.published}</span>
-										</>
-									)}
-									<span className='pub-sep'>·</span>
-									<span>{readingTime(article.wordCount)}</span>
 								</div>
 
 								<h1 className='article-title'>{article.title}</h1>
 								{article.subtitle && <p className='article-subtitle'>{article.subtitle}</p>}
 
-								{article.author && (
-									<div className='byline'>
-										{article.authorImage && (
-											<img
-												src={article.authorImage}
-												alt=''
-												className='byline-photo'
-												width={26}
-												height={26}
-												referrerPolicy='no-referrer'
-											/>
-										)}
-										<span>
-											by <span className='byline-name'>{article.author}</span>
-										</span>
-									</div>
-								)}
+								<div className='byline'>
+									{article.author && (
+										<>
+											{article.authorImage && (
+												<img
+													src={article.authorImage}
+													alt=''
+													className='byline-photo'
+													width={26}
+													height={26}
+													fetchPriority='high'
+													referrerPolicy='no-referrer'
+												/>
+											)}
+											<span>
+												by <span className='byline-name'>{article.author}</span>
+											</span>
+											<span className='meta-sep'>·</span>
+										</>
+									)}
+									{article.published && (
+										<>
+											<span>{article.published}</span>
+											<span className='meta-sep'>·</span>
+										</>
+									)}
+									<span>{readingTime(article.wordCount)}</span>
+								</div>
 
 								<div className='fleuron' aria-hidden='true'>
 									❦
@@ -84,6 +88,8 @@ export function ArticleView({ article }: { article: Article }) {
 
 							<footer className='colophon'>
 								<p>
+									{article.author && <>{article.author} · </>}
+									{article.publication} ·{' '}
 									<a href={article.canonicalUrl} target='_blank' rel='noopener noreferrer'>
 										{article.canonicalUrl}
 									</a>
