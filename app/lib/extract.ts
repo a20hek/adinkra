@@ -223,23 +223,14 @@ function cleanBodyHtml(html: string, baseUrl: string): string {
 	});
 }
 
-/** Readability wraps content in nested divs; peel them so house paragraph styles apply. */
-function unwrapSingleDivs(html: string): string {
-	const body = new JSDOM(`<body>${html}</body>`).window.document.body;
-	while (body.children.length === 1 && body.children[0].tagName === 'DIV') {
-		body.children[0].replaceWith(...body.children[0].childNodes);
-	}
-	return body.innerHTML;
-}
-
 /**
  * True when the first meaningful content in the body (in document order,
  * before any text) is an image. Authors often upload the same artwork twice —
  * inline at the top and again as the post cover — under different asset URLs,
  * so URL comparison can't catch the duplicate; position is the only signal.
  */
-function bodyLeadsWithImage(bodyHtml: string): boolean {
-	const { document, NodeFilter } = new JSDOM(`<body>${bodyHtml}</body>`).window;
+function bodyLeadsWithImage(window: JSDOM['window']): boolean {
+	const { document, NodeFilter } = window;
 	const walker = document.createTreeWalker(
 		document.body,
 		NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_TEXT
@@ -249,21 +240,6 @@ function bodyLeadsWithImage(bodyHtml: string): boolean {
 		if (node.nodeType === node.TEXT_NODE && node.textContent?.trim()) return false;
 	}
 	return false;
-}
-
-function bodyImageKeys(bodyHtml: string): Set<string> {
-	const dom = new JSDOM(`<body>${bodyHtml}</body>`);
-	const keys = new Set<string>();
-	for (const img of dom.window.document.querySelectorAll('img')) {
-		const src = img.getAttribute('src');
-		if (src) keys.add(imageKey(src));
-	}
-	return keys;
-}
-
-function countWords(bodyHtml: string): number {
-	const text = new JSDOM(`<body>${bodyHtml}</body>`).window.document.body.textContent ?? '';
-	return text.split(/\s+/).filter(Boolean).length;
 }
 
 function formatDisplayDate(value: string | undefined): string | undefined {
@@ -287,17 +263,35 @@ function faviconFor(origin: string): string {
 	return `https://www.google.com/s2/favicons?domain=${encodeURIComponent(origin)}&sz=64`;
 }
 
+/** One parse serves all the finishing passes: peeling single-div wrappers
+ * (Readability nests them) so house paragraph styles apply, hero-image
+ * dedup, and word counting. */
 function finishArticle(
 	partial: Omit<Article, 'wordCount' | 'heroImage'> & { heroImage?: string }
 ): Article {
+	const window = new JSDOM(`<body>${partial.bodyHtml}</body>`).window;
+	const body = window.document.body;
+
+	while (body.children.length === 1 && body.children[0].tagName === 'DIV') {
+		body.children[0].replaceWith(...body.children[0].childNodes);
+	}
+
+	const imageKeys = new Set<string>();
+	for (const img of body.querySelectorAll('img')) {
+		const src = img.getAttribute('src');
+		if (src) imageKeys.add(imageKey(src));
+	}
+
 	const hero =
 		partial.heroImage &&
-		!bodyImageKeys(partial.bodyHtml).has(imageKey(partial.heroImage)) &&
-		!bodyLeadsWithImage(partial.bodyHtml)
+		!imageKeys.has(imageKey(partial.heroImage)) &&
+		!bodyLeadsWithImage(window)
 			? partial.heroImage
 			: undefined;
 
-	return { ...partial, heroImage: hero, wordCount: countWords(partial.bodyHtml) };
+	const wordCount = (body.textContent ?? '').split(/\s+/).filter(Boolean).length;
+
+	return { ...partial, bodyHtml: body.innerHTML, heroImage: hero, wordCount };
 }
 
 type SubstackPublication = {
@@ -465,7 +459,7 @@ function parseGeneric(html: string, url: URL): Article {
 		title: parsed.title?.trim() || doc.title.trim() || 'Untitled',
 		published: published ?? formatDisplayDate(parsed.publishedTime ?? undefined),
 		heroImage,
-		bodyHtml: unwrapSingleDivs(cleanBodyHtml(parsed.content, url.toString())),
+		bodyHtml: cleanBodyHtml(parsed.content, url.toString()),
 	});
 }
 
