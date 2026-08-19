@@ -489,11 +489,20 @@ export async function extractArticle(rawUrl: string): Promise<Article> {
 	const url = normalizeUrl(rawUrl);
 
 	// Substack posts (any custom domain) expose a clean JSON API at /api/v1/posts/<slug>.
-	const substack = await trySubstack(url);
+	// Probe it in parallel with the page fetch so a miss costs no extra round
+	// trip; the page fetch's outcome only matters when the probe misses, so its
+	// rejection is deferred (and swallowed on a hit) rather than surfaced here.
+	const substackPromise = trySubstack(url);
+	const pagePromise = fetchRaw(url).then(async ({ response, finalUrl }) => ({
+		html: await decodeHtml(response),
+		finalUrl,
+	}));
+	void pagePromise.catch(() => {});
+
+	const substack = await substackPromise;
 	if (substack) return substack;
 
-	const { response, finalUrl } = await fetchRaw(url);
-	const html = await decodeHtml(response);
+	const { html, finalUrl } = await pagePromise;
 
 	if (/(^|\.)paulgraham\.com$/i.test(finalUrl.hostname)) {
 		return parsePaulGraham(html, finalUrl);
