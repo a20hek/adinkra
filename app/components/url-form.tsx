@@ -35,6 +35,7 @@ export function UrlForm() {
 		const pasted = event.clipboardData.getData('text').trim();
 		if (/^https?:\/\/\S+$/i.test(pasted) && !value.trim()) {
 			event.preventDefault();
+			event.currentTarget.blur();
 			setValue(pasted);
 			open(pasted);
 		}

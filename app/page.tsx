@@ -3,6 +3,7 @@ import { cache } from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArticleView } from "./components/article-view";
+import { TryLine } from "./components/try-line";
 import { UrlForm } from "./components/url-form";
 import type { Article } from "./lib/article";
 import { ExtractError, extractArticle } from "./lib/extract";
@@ -75,16 +76,7 @@ export default async function Home({ searchParams }: PageProps<"/">) {
           <LoadedArticle url={url} />
         </Suspense>
       ) : (
-        <p className="try">
-          Try{" "}
-          {EXAMPLES.map((example, index) => (
-            <span key={example.url}>
-              {index > 0 && " or "}
-              <Link href={`/?url=${encodeURIComponent(example.url)}`}>{example.label}</Link>
-            </span>
-          ))}
-          .
-        </p>
+        <TryLine examples={EXAMPLES} />
       )}
     </main>
   );
