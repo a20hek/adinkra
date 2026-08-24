@@ -803,6 +803,17 @@ body {
 		break-inside: avoid;
 	}
 
+	/* Tall heroes must fit page 1 beside the header — break-inside:
+     avoid would otherwise shove them whole onto page 2. 130mm leaves
+     room for a multi-line title on A4 and Letter alike. */
+	.hero img {
+		width: auto;
+		max-width: 100%;
+		max-height: 130mm;
+		margin-inline: auto;
+		display: block;
+	}
+
 	.article-body h1,
 	.article-body h2,
 	.article-body h3 {
