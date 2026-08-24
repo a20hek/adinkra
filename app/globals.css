@@ -803,10 +803,13 @@ body {
 		break-inside: avoid;
 	}
 
-	/* Tall heroes must fit page 1 beside the header — break-inside:
-     avoid would otherwise shove them whole onto page 2. 130mm leaves
-     room for a multi-line title on A4 and Letter alike. */
-	.hero img {
+	/* Tall images must fit the space left on their page — break-inside:
+     avoid would otherwise shove them whole onto the next one, e.g. a
+     lead body figure (heroes demoted by dedup render there) leaving
+     page 1 with only the header. 130mm leaves room for a multi-line
+     title on A4 and Letter alike. */
+	.hero img,
+	.article-body figure img {
 		width: auto;
 		max-width: 100%;
 		max-height: 130mm;
