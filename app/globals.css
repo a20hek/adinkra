@@ -408,6 +408,16 @@ body {
 	overflow-wrap: break-word;
 }
 
+@media (max-width: 40rem) {
+	.article-subtitle {
+		font-size: 1.1875rem;
+	}
+
+	.article-body {
+		font-size: 1.125rem;
+	}
+}
+
 .article-body p {
 	margin: 0 0 1.15em;
 	text-wrap: pretty;
